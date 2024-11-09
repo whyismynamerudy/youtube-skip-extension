@@ -32,7 +32,7 @@ export default function Home() {
   const router = useRouter()
   const [stats, setStats] = useState<Stats>({ totalUsers: 0, totalSkips: 0 })
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<any>(null) // eslint-disable-line
   const [userStats, setUserStats] = useState<{ rank: number; bestTime: number } | null>(null)
 
   useEffect(() => {
