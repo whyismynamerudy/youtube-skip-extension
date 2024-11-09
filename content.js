@@ -1,3 +1,6 @@
+const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
 let skipButtonAppearanceTime = null;
 let observer = null;
 
@@ -77,6 +80,13 @@ function resetDetection() {
 }
 
 console.log('YouTube Ad Reaction Timer content script loaded');
+
+console.log("Extension ID:", chrome.runtime.id);
+
+// You could use this in your popup.js or content.js like this:
+const extensionId = chrome.runtime.id;
+const redirectUrl = `chrome-extension://${extensionId}/popup.html`;
+
 setupInitialCheck();
 observeDOM();
 
@@ -89,3 +99,6 @@ setInterval(() => {
         resetDetection();
     }
 }, 5000);
+
+// runtime id: clndmfljgfmllelmkpcldkpiabemnlcd
+// client id: 65618186480-2unp9l5lr157atlmsd5h3k4l5l0585fo.apps.googleusercontent.com

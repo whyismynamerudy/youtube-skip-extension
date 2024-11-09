@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YouTube Ad Reaction Timer</title>
+  <style>
+    body { width: 300px; font-family: Arial, sans-serif; padding: 10px; }
+    button { display: block; width: 100%; padding: 10px; margin: 10px 0; }
+    #userInfo, #reactionTimes { display: none; }
+    #reactionTimesList { padding-left: 20px; }
+  </style>
+</head>
+<body>
+  <h1>YouTube Ad Reaction Timer</h1>
+  <button id="signInButton">Sign in with Google</button>
+  <div id="userInfo">
+    <p>Signed in as: <span id="userEmail"></span></p>
+    <button id="signOutButton">Sign Out</button>
+  </div>
+  <div id="reactionTimes">
+    <h2>Your Recent Reaction Times</h2>
+    <ul id="reactionTimesList"></ul>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
