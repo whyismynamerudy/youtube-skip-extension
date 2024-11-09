@@ -1,17 +1,20 @@
 'use client'
 
-import { createClient } from '@supabase/supabase-js'
+// import { createClient } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Timer, Users, Zap, Crown, Download } from 'lucide-react'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useRouter } from 'next/navigation'
 
 // Initialize Supabase client
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+// const supabase = createClient(
+//   process.env.NEXT_PUBLIC_SUPABASE_URL!,
+//   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+// )
+const supabase = createClientComponentClient()
 
 interface Stats {
   totalUsers: number;
@@ -26,6 +29,7 @@ interface LeaderboardEntry {
 }
 
 export default function Home() {
+  const router = useRouter()
   const [stats, setStats] = useState<Stats>({ totalUsers: 0, totalSkips: 0 })
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [user, setUser] = useState<any>(null)
@@ -56,18 +60,31 @@ export default function Home() {
     }
   }
 
-  async function fetchStats() {
-    const { data } = await supabase
-      .from('stats')
-      .select('total_users, total_skips')
-      .single()
+  // async function fetchStats() {
+  //   const { data } = await supabase
+  //     .from('stats')
+  //     .select('total_users, total_skips')
+  //     .single()
     
-    if (data) {
-      setStats({
-        totalUsers: data.total_users,
-        totalSkips: data.total_skips
-      })
-    }
+  //   if (data) {
+  //     setStats({
+  //       totalUsers: data.total_users,
+  //       totalSkips: data.total_skips
+  //     })
+  //   }
+  // }
+
+  async function fetchStats() {
+    // Since we removed the global_stats table, let's calculate these directly
+    const [usersCount, skipsCount] = await Promise.all([
+      supabase.from('auth.users').select('id', { count: 'exact' }),
+      supabase.from('reaction_times').select('id', { count: 'exact' })
+    ])
+    
+    setStats({
+      totalUsers: usersCount.count || 0,
+      totalSkips: skipsCount.count || 0
+    })
   }
   
   async function fetchLeaderboard() {
@@ -117,8 +134,11 @@ export default function Home() {
           </Button>
         ) : (
           <div className="flex items-center space-x-4">
-            <span className="text-white">{user.email}</span>
-            <Button variant="outline" onClick={() => supabase.auth.signOut()}>
+            <span className="text-black">{user.email}</span>
+            <Button variant="outline" onClick={() => {
+              supabase.auth.signOut()
+              router.push('/')
+            }}>
               Sign Out
             </Button>
           </div>
@@ -212,6 +232,14 @@ export default function Home() {
           </div>
         </CardContent>
       </Card>
+      {user && (
+        <div 
+          id="youtube-reaction-timer-data" 
+          style={{ display: 'none' }}
+          data-user-id={user.id}
+          data-email={user.email}
+        />
+      )}
     </main>
   )
 }
