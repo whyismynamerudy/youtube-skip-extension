@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
@@ -8,7 +8,7 @@ function CallbackContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const supabase = createClientComponentClient()
-  const [status, setStatus] = useState<string>('Setting up your session...')
+//   const [status, setStatus] = useState<string>('Setting up your session...')
 
   useEffect(() => {
     const handleCallback = async () => {
@@ -60,7 +60,7 @@ function CallbackContent() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-4">
-      <p className="text-lg">{status}</p>
+      <p className="text-lg">Setting up your session...</p>
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
     </div>
   )
