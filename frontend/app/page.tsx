@@ -77,7 +77,7 @@ export default function Home() {
   async function fetchStats() {
     // Since we removed the global_stats table, let's calculate these directly
     const [usersCount, skipsCount] = await Promise.all([
-      supabase.from('auth.users').select('id', { count: 'exact' }),
+      supabase.from('user_stats').select('user_id', { count: 'exact' }),
       supabase.from('reaction_times').select('id', { count: 'exact' })
     ])
     

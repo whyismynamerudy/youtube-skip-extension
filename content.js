@@ -1,8 +1,8 @@
-const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-
 let skipButtonAppearanceTime = null;
 let observer = null;
+
+let currentUserId = null;
+let currentUserEmail = null;
 
 function isSkipButtonClickable(skipButton) {
     // Check if the button is enabled and visible
@@ -28,10 +28,44 @@ function handleSkipButtonState(skipButton) {
     }
 }
 
-function handleSkipClick() {
+// function handleSkipClick() {
+//     if (skipButtonAppearanceTime) {
+//         const reactionTime = (Date.now() - skipButtonAppearanceTime) / 1000;
+//         console.log(`Reaction time: ${reactionTime.toFixed(3)} seconds`);
+//         skipButtonAppearanceTime = null;
+//     }
+// }
+
+async function handleSkipClick() {
     if (skipButtonAppearanceTime) {
         const reactionTime = (Date.now() - skipButtonAppearanceTime) / 1000;
         console.log(`Reaction time: ${reactionTime.toFixed(3)} seconds`);
+        
+        // Get current user from storage
+        chrome.storage.local.get(['userId', 'userEmail'], async function(result) {
+            if (result.userId) {
+                try {
+                    const response = await fetch('https://ytskip.whyismynamerudy.tech/api/reaction-time', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: result.userId,
+                            reactionTime: reactionTime,
+                            timestamp: new Date().toISOString()
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error('Failed to save reaction time');
+                    }
+                } catch (error) {
+                    console.error('Error saving reaction time:', error);
+                }
+            }
+        });
+        
         skipButtonAppearanceTime = null;
     }
 }
@@ -64,9 +98,22 @@ function observeDOM() {
     });
 }
 
+function observeUserData() {
+    const observer = new MutationObserver((mutations) => {
+        checkForUserData();
+    });
+    
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
 function setupInitialCheck() {
     checkForSkipButton();
-    setInterval(checkForSkipButton, 100); // Check frequently
+    checkForUserData();
+    setInterval(checkForSkipButton, 100);
+    setInterval(checkForUserData, 1000);
 }
 
 function resetDetection() {
@@ -79,6 +126,30 @@ function resetDetection() {
     observeDOM();
 }
 
+
+// Function to check for user data
+function checkForUserData() {
+    const userDataDiv = document.querySelector('#youtube-reaction-timer-data');
+    if (userDataDiv) {
+        const newUserId = userDataDiv.getAttribute('data-user-id');
+        const newUserEmail = userDataDiv.getAttribute('data-email');
+        
+        // Only update if the user has changed
+        if (newUserId !== currentUserId || newUserEmail !== currentUserEmail) {
+            currentUserId = newUserId;
+            currentUserEmail = newUserEmail;
+            
+            // Store in chrome.storage for persistence
+            chrome.storage.local.set({
+                userId: currentUserId,
+                userEmail: currentUserEmail
+            });
+
+            console.log('User data updated:', currentUserId, currentUserEmail);
+        }
+    }
+}
+
 console.log('YouTube Ad Reaction Timer content script loaded');
 
 console.log("Extension ID:", chrome.runtime.id);
@@ -89,6 +160,7 @@ const redirectUrl = `chrome-extension://${extensionId}/popup.html`;
 
 setupInitialCheck();
 observeDOM();
+observeUserData();
 
 // Listen for navigation events
 document.addEventListener('yt-navigate-start', resetDetection);

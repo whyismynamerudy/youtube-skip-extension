@@ -4,14 +4,16 @@
     "version": "1.0",
     "description": "Measure reaction time to YouTube ad skip buttons",
     "permissions": [
-      "activeTab"
+      "activeTab",
+      "storage"
     ],
     "host_permissions": [
-      "https://www.youtube.com/*"
+      "https://www.youtube.com/*",
+      "https://ytskip.whyismynamerudy.tech/*"
     ],
     "content_scripts": [
       {
-        "matches": ["https://www.youtube.com/*"],
+        "matches": ["https://www.youtube.com/*", "https://ytskip.whyismynamerudy.tech/*"],
         "js": ["content.js"]
       }
     ]
