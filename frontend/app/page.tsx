@@ -23,7 +23,7 @@ interface Stats {
 
 interface LeaderboardEntry {
   userId: string;
-  email: string;
+  displayName: string;
   bestTime: number;
   rank: number;
 }
@@ -90,18 +90,18 @@ export default function Home() {
   async function fetchLeaderboard() {
     const { data } = await supabase
       .from('leaderboard')
-      .select('user_id, email, best_time, rank')
+      .select('user_id, display_name, best_time, rank')
       .order('rank', { ascending: true })
       .limit(10)
     
-    if (data) {
-      setLeaderboard(data.map(entry => ({
-        userId: entry.user_id,
-        email: entry.email,
-        bestTime: entry.best_time,
-        rank: entry.rank
-      })))
-    }
+      if (data) {
+        setLeaderboard(data.map(entry => ({
+          userId: entry.user_id,
+          displayName: entry.display_name, // Changed from email to display_name
+          bestTime: entry.best_time,
+          rank: entry.rank
+        })))
+      }
   }
 
   async function signInWithGoogle() {
@@ -222,7 +222,9 @@ export default function Home() {
                   <Badge variant={index < 3 ? "default" : "secondary"}>
                     #{entry.rank}
                   </Badge>
-                  <span className="text-white">{entry.email}</span>
+                  <span className="text-white">
+                    {entry.userId === user?.id ? 'You' : entry.displayName}
+                  </span>
                 </div>
                 <span className="text-xl font-bold text-blue-500">
                   {entry.bestTime.toFixed(3)}s
