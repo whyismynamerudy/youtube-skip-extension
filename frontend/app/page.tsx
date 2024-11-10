@@ -80,6 +80,7 @@ const DownloadButton = () => {
               <li>Open Chrome and go to chrome://extensions</li>
               <li>Enable &ldquo;Developer mode&rdquo; in the top right</li>
               <li>Click &ldquo;Load unpacked&rdquo; and select the folder</li>
+              <li>Come back to this website and sign in with Google</li>
               <li>Start watching YouTube videos!</li>
             </ol>
           </div>
