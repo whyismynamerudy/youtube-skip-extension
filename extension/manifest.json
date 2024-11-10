@@ -16,5 +16,8 @@
         "matches": ["https://www.youtube.com/*", "https://ytskip.whyismynamerudy.tech/*"],
         "js": ["content.js"]
       }
-    ]
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    }
 }

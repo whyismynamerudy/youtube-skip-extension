@@ -5,7 +5,7 @@ const path = require('path')
 const archiver = require('archiver')
 
 // Make sure the public/extension directory exists
-const extensionDir = path.join(process.cwd(), 'public', 'extension')
+const extensionDir = path.join(process.cwd(), 'frontend', 'public', 'extension')
 if (!fs.existsSync(extensionDir)) {
   fs.mkdirSync(extensionDir, { recursive: true })
 }

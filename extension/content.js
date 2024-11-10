@@ -58,7 +58,10 @@ async function handleSkipClick() {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
+                            'Accept': 'application/json'
                         },
+                        mode: 'cors',  // Explicitly state we're making a CORS request
+                        credentials: 'omit', // Don't send cookies
                         body: JSON.stringify({
                             userId: result.userId,
                             reactionTime: reactionTime,
@@ -188,7 +191,7 @@ function checkForUserData() {
         // No user data div found, user is logged out
         currentUserId = null;
         currentUserEmail = null;
-        chrome.storage.local.remove(['userId', 'userEmail', 'userName', 'latestReactionTime']);
+        // chrome.storage.local.remove(['userId', 'userEmail', 'userName', 'latestReactionTime']);
     }
 }
 
