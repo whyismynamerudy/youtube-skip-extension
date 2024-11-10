@@ -78,8 +78,8 @@ const DownloadButton = () => {
             <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1">
               <li>Download and extract the extension</li>
               <li>Open Chrome and go to chrome://extensions</li>
-              <li>Enable "Developer mode" in the top right</li>
-              <li>Click "Load unpacked" and select the folder</li>
+              <li>Enable &ldquo;Developer mode&rdquo; in the top right</li>
+              <li>Click &ldquo;Load unpacked&rdquo; and select the folder</li>
               <li>Start watching YouTube videos!</li>
             </ol>
           </div>
