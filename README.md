@@ -28,13 +28,10 @@ Test your reflexes and compete with others to be the fastest YouTube ad skipper!
 
 - **Backend**
   - Supabase (PostgreSQL)
-  - Row Level Security
-  - Real-time updates
 
 - **Chrome Extension**
   - Manifest V3
   - Content Scripts
-  - Background Workers
 
 ## 🚀 Getting Started
 
@@ -49,8 +46,8 @@ Test your reflexes and compete with others to be the fastest YouTube ad skipper!
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/youtube-ad-timer.git
-cd youtube-ad-timer
+git clone https://github.com/whyismynamerudy/youtube-skip-extension.git
+cd youtube-skip-extension
 ```
 
 2. Install dependencies
@@ -68,7 +65,6 @@ npm install
 # In frontend/.env.local
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 ```
 
 4. Start development servers
