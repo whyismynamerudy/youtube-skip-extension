@@ -5,7 +5,12 @@ import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Timer, Users, Zap, Crown, Download } from 'lucide-react'
+import { Timer, Users, Zap, Crown, Download, HelpCircle } from 'lucide-react'
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card"
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
@@ -26,6 +31,62 @@ interface LeaderboardEntry {
   displayName: string;
   bestTime: number;
   rank: number;
+}
+
+const DownloadButton = () => {
+  const [downloading, setDownloading] = useState(false)
+  
+  const handleDownload = async () => {
+    try {
+      setDownloading(true)
+      window.location.href = '/extension/youtube-ad-timer.zip'
+    } catch (error) {
+      console.error('Download error:', error)
+    } finally {
+      setDownloading(false)
+    }
+  }
+
+  return (
+    <div className="flex items-center gap-2">
+      <Button 
+        onClick={handleDownload} 
+        disabled={downloading}
+        className="flex-1 flex items-center justify-center gap-2"
+      >
+        {downloading ? (
+          <>
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+            Downloading...
+          </>
+        ) : (
+          <>
+            <Download className="w-4 h-4" />
+            Download Extension
+          </>
+        )}
+      </Button>
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <HelpCircle className="h-4 w-4" />
+          </Button>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-80">
+          <div className="space-y-2">
+            <h4 className="font-medium">Installation Instructions</h4>
+            <ol className="text-sm text-muted-foreground list-decimal list-inside space-y-1">
+              <li>Download and extract the extension</li>
+              <li>Open Chrome and go to chrome://extensions</li>
+              <li>Enable "Developer mode" in the top right</li>
+              <li>Click "Load unpacked" and select the folder</li>
+              <li>Start watching YouTube videos!</li>
+            </ol>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    </div>
+  )
 }
 
 export default function Home() {
@@ -202,7 +263,7 @@ export default function Home() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Button className="w-full">Download Extension</Button>
+            <DownloadButton />
           </CardContent>
         </Card>
       </div>
