@@ -1,0 +1,8 @@
+{ 
+  "scripts": {
+    "package-extension": "node scripts/package-extension.js"
+  },
+  "devDependencies": {
+    "archiver": "^7.0.1"
+  }
+}

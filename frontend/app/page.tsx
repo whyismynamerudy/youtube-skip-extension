@@ -240,6 +240,7 @@ export default function Home() {
           style={{ display: 'none' }}
           data-user-id={user.id}
           data-email={user.email}
+          data-display-name={user.user_metadata?.full_name || user.user_metadata?.name || user.email}
         />
       )}
     </main>
