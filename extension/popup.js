@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // User is not logged in
       content.innerHTML = `
         <div class="not-logged-in">
-          Please sign in on the website to track your reaction times
+          Please sign in on <a href="https://ytskip.whyismynamerudy.tech/">the website</a> to track your reaction times. Log into the extension by logging in on <a href="https://ytskip.whyismynamerudy.tech/">the website</a>.
         </div>
       `;
     }

@@ -188,7 +188,7 @@ export default function Home() {
       <nav className="flex justify-between items-center mb-8">
         <div className="flex items-center space-x-2">
           <Timer className="w-8 h-8 text-blue-500" />
-          <h1 className="text-2xl font-bold text-white">Ad Reaction Timer</h1>
+          <h1 className="text-2xl font-bold text-black">Ad Reaction Timer</h1>
         </div>
         {!user ? (
           <Button onClick={signInWithGoogle} variant="outline">
@@ -210,21 +210,21 @@ export default function Home() {
       {user && userStats && (
         <Card className="mb-8 bg-blue-500/10 border-blue-500/20">
           <CardHeader>
-            <CardTitle className="text-white">Your Stats</CardTitle>
+            <CardTitle className="text-black">Your Stats</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Crown className="w-8 h-8 text-yellow-500" />
               <div>
                 <p className="text-sm text-gray-400">Your Rank</p>
-                <p className="text-2xl font-bold text-white">#{userStats.rank}</p>
+                <p className="text-2xl font-bold text-black">#{userStats.rank}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <Zap className="w-8 h-8 text-blue-500" />
               <div>
                 <p className="text-sm text-gray-400">Best Time</p>
-                <p className="text-2xl font-bold text-white">{userStats.bestTime.toFixed(3)}s</p>
+                <p className="text-2xl font-bold text-black">{userStats.bestTime.toFixed(3)}s</p>
               </div>
             </div>
           </CardContent>
