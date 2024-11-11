@@ -1,6 +1,5 @@
 'use client'
 
-// import { createClient } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -14,11 +13,6 @@ import {
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-// Initialize Supabase client
-// const supabase = createClient(
-//   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-//   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-// )
 const supabase = createClientComponentClient()
 
 interface Stats {
@@ -184,47 +178,55 @@ export default function Home() {
   }
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <nav className="flex justify-between items-center mb-8">
-        <div className="flex items-center space-x-2">
-          <Timer className="w-8 h-8 text-blue-500" />
-          <h1 className="text-2xl font-bold text-black">Ad Reaction Timer</h1>
-        </div>
-        {!user ? (
-          <Button onClick={signInWithGoogle} variant="outline">
-            Sign in with Google
-          </Button>
-        ) : (
-          <div className="flex items-center space-x-4">
-            <span className="text-black">{user.email}</span>
-            <Button variant="outline" onClick={() => {
-              supabase.auth.signOut()
-              router.push('/')
-            }}>
-              Sign Out
-            </Button>
+    <main className="container relative mx-auto px-4 py-8">
+      {/* Background gradient circles */}
+      <div className="fixed inset-0 overflow-hidden -z-10">
+        <div className="absolute -left-1/4 -top-1/4 w-1/2 h-1/2 bg-blue-400/30 rounded-full blur-3xl animate-drift" />
+        <div className="absolute -right-1/4 -bottom-1/4 w-1/2 h-1/2 bg-purple-400/30 rounded-full blur-3xl animate-drift-slow" />
+      </div>
+
+      <nav className="glass mb-8 p-4 rounded-lg">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Timer className="w-8 h-8 text-blue-500" />
+            <h1 className="text-2xl font-bold">Ad Reaction Timer</h1>
           </div>
-        )}
+          {!user ? (
+            <Button onClick={signInWithGoogle} variant="outline" className="glass">
+              Sign in with Google
+            </Button>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <span>{user.email}</span>
+              <Button variant="outline" className="glass" onClick={() => {
+                supabase.auth.signOut()
+                router.push('/')
+              }}>
+                Sign Out
+              </Button>
+            </div>
+          )}
+        </div>
       </nav>
 
       {user && userStats && (
-        <Card className="mb-8 bg-blue-500/10 border-blue-500/20">
+        <Card className="glass-card mb-8">
           <CardHeader>
-            <CardTitle className="text-black">Your Stats</CardTitle>
+            <CardTitle>Your Stats</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Crown className="w-8 h-8 text-yellow-500" />
               <div>
-                <p className="text-sm text-gray-400">Your Rank</p>
-                <p className="text-2xl font-bold text-black">#{userStats.rank}</p>
+                <p className="text-sm text-muted-foreground">Your Rank</p>
+                <p className="text-2xl font-bold">#{userStats.rank}</p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
               <Zap className="w-8 h-8 text-blue-500" />
               <div>
-                <p className="text-sm text-gray-400">Best Time</p>
-                <p className="text-2xl font-bold text-black">{userStats.bestTime.toFixed(3)}s</p>
+                <p className="text-sm text-muted-foreground">Best Time</p>
+                <p className="text-2xl font-bold">{userStats.bestTime.toFixed(3)}s</p>
               </div>
             </div>
           </CardContent>
@@ -232,7 +234,7 @@ export default function Home() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <Card>
+        <Card className="glass-card">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Users className="w-5 h-5 text-blue-500" />
@@ -244,7 +246,7 @@ export default function Home() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="glass-card">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Zap className="w-5 h-5 text-yellow-500" />
@@ -256,7 +258,7 @@ export default function Home() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-2 lg:col-span-1">
+        <Card className="glass-card md:col-span-2 lg:col-span-1">
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
               <Download className="w-5 h-5 text-green-500" />
@@ -269,7 +271,7 @@ export default function Home() {
         </Card>
       </div>
 
-      <Card>
+      <Card className="glass-card">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <Crown className="w-5 h-5 text-yellow-500" />
@@ -279,12 +281,15 @@ export default function Home() {
         <CardContent>
           <div className="space-y-4">
             {leaderboard.map((entry, index) => (
-              <div key={entry.userId} className="flex items-center justify-between p-4 rounded-lg bg-slate-800/50">
+              <div 
+                key={entry.userId} 
+                className="glass flex items-center justify-between p-4 rounded-lg"
+              >
                 <div className="flex items-center space-x-4">
                   <Badge variant={index < 3 ? "default" : "secondary"}>
                     #{entry.rank}
                   </Badge>
-                  <span className="text-white">
+                  <span>
                     {entry.userId === user?.id ? 'You' : entry.displayName}
                   </span>
                 </div>
@@ -296,6 +301,7 @@ export default function Home() {
           </div>
         </CardContent>
       </Card>
+      
       {user && (
         <div 
           id="youtube-reaction-timer-data" 
@@ -307,4 +313,129 @@ export default function Home() {
       )}
     </main>
   )
+
+  // return (
+  //   <main className="container mx-auto px-4 py-8">
+  //     <nav className="flex justify-between items-center mb-8">
+  //       <div className="flex items-center space-x-2">
+  //         <Timer className="w-8 h-8 text-blue-500" />
+  //         <h1 className="text-2xl font-bold text-black">Ad Reaction Timer</h1>
+  //       </div>
+  //       {!user ? (
+  //         <Button onClick={signInWithGoogle} variant="outline">
+  //           Sign in with Google
+  //         </Button>
+  //       ) : (
+  //         <div className="flex items-center space-x-4">
+  //           <span className="text-black">{user.email}</span>
+  //           <Button variant="outline" onClick={() => {
+  //             supabase.auth.signOut()
+  //             router.push('/')
+  //           }}>
+  //             Sign Out
+  //           </Button>
+  //         </div>
+  //       )}
+  //     </nav>
+
+  //     {user && userStats && (
+  //       <Card className="mb-8 bg-blue-500/10 border-blue-500/20">
+  //         <CardHeader>
+  //           <CardTitle className="text-black">Your Stats</CardTitle>
+  //         </CardHeader>
+  //         <CardContent className="flex justify-between items-center">
+  //           <div className="flex items-center space-x-4">
+  //             <Crown className="w-8 h-8 text-yellow-500" />
+  //             <div>
+  //               <p className="text-sm text-gray-400">Your Rank</p>
+  //               <p className="text-2xl font-bold text-black">#{userStats.rank}</p>
+  //             </div>
+  //           </div>
+  //           <div className="flex items-center space-x-4">
+  //             <Zap className="w-8 h-8 text-blue-500" />
+  //             <div>
+  //               <p className="text-sm text-gray-400">Best Time</p>
+  //               <p className="text-2xl font-bold text-black">{userStats.bestTime.toFixed(3)}s</p>
+  //             </div>
+  //           </div>
+  //         </CardContent>
+  //       </Card>
+  //     )}
+
+  //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+  //       <Card>
+  //         <CardHeader>
+  //           <CardTitle className="flex items-center space-x-2">
+  //             <Users className="w-5 h-5 text-blue-500" />
+  //             <span>Total Users</span>
+  //           </CardTitle>
+  //         </CardHeader>
+  //         <CardContent>
+  //           <p className="text-3xl font-bold">{stats.totalUsers}</p>
+  //         </CardContent>
+  //       </Card>
+        
+  //       <Card>
+  //         <CardHeader>
+  //           <CardTitle className="flex items-center space-x-2">
+  //             <Zap className="w-5 h-5 text-yellow-500" />
+  //             <span>Total Skips</span>
+  //           </CardTitle>
+  //         </CardHeader>
+  //         <CardContent>
+  //           <p className="text-3xl font-bold">{stats.totalSkips}</p>
+  //         </CardContent>
+  //       </Card>
+
+  //       <Card className="md:col-span-2 lg:col-span-1">
+  //         <CardHeader>
+  //           <CardTitle className="flex items-center space-x-2">
+  //             <Download className="w-5 h-5 text-green-500" />
+  //             <span>Get Started</span>
+  //           </CardTitle>
+  //         </CardHeader>
+  //         <CardContent>
+  //           <DownloadButton />
+  //         </CardContent>
+  //       </Card>
+  //     </div>
+
+  //     <Card>
+  //       <CardHeader>
+  //         <CardTitle className="flex items-center space-x-2">
+  //           <Crown className="w-5 h-5 text-yellow-500" />
+  //           <span>Leaderboard</span>
+  //         </CardTitle>
+  //       </CardHeader>
+  //       <CardContent>
+  //         <div className="space-y-4">
+  //           {leaderboard.map((entry, index) => (
+  //             <div key={entry.userId} className="flex items-center justify-between p-4 rounded-lg bg-slate-800/50">
+  //               <div className="flex items-center space-x-4">
+  //                 <Badge variant={index < 3 ? "default" : "secondary"}>
+  //                   #{entry.rank}
+  //                 </Badge>
+  //                 <span className="text-white">
+  //                   {entry.userId === user?.id ? 'You' : entry.displayName}
+  //                 </span>
+  //               </div>
+  //               <span className="text-xl font-bold text-blue-500">
+  //                 {entry.bestTime.toFixed(3)}s
+  //               </span>
+  //             </div>
+  //           ))}
+  //         </div>
+  //       </CardContent>
+  //     </Card>
+  //     {user && (
+  //       <div 
+  //         id="youtube-reaction-timer-data" 
+  //         style={{ display: 'none' }}
+  //         data-user-id={user.id}
+  //         data-email={user.email}
+  //         data-display-name={user.user_metadata?.full_name || user.user_metadata?.name || user.email}
+  //       />
+  //     )}
+  //   </main>
+  // )
 }
