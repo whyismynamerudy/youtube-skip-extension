@@ -3,7 +3,6 @@ import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
-// Helper function to handle CORS headers
 const corsHeaders = {
     'Access-Control-Allow-Origin': 'https://www.youtube.com',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -11,7 +10,6 @@ const corsHeaders = {
     'Access-Control-Max-Age': '86400',
   }
   
-  // Handle OPTIONS preflight request
   export async function OPTIONS() {
     return NextResponse.json({}, {
       headers: corsHeaders,
@@ -30,14 +28,12 @@ export async function POST(req: Request) {
   try {
     const { userId, reactionTime, timestamp } = await req.json()
     
-    // Validate input
     if (!userId || !reactionTime || reactionTime < 0) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 })
     }
     
     const supabase = createRouteHandlerClient({ cookies })
     
-    // Insert reaction time
     const { error } = await supabase
       .from('reaction_times')
       .insert({

@@ -89,28 +89,13 @@ export default function Home() {
       if (data) {
         setUserStats({
           rank: data.rank,
-          bestTime: data.best_time // Transform the snake_case to camelCase
+          bestTime: data.best_time
         })
       }
     }
   }
 
-  // async function fetchStats() {
-  //   const { data } = await supabase
-  //     .from('stats')
-  //     .select('total_users, total_skips')
-  //     .single()
-    
-  //   if (data) {
-  //     setStats({
-  //       totalUsers: data.total_users,
-  //       totalSkips: data.total_skips
-  //     })
-  //   }
-  // }
-
   async function fetchStats() {
-    // Since we removed the global_stats table, let's calculate these directly
     const [usersCount, skipsCount] = await Promise.all([
       supabase.from('user_stats').select('user_id', { count: 'exact' }),
       supabase.from('reaction_times').select('id', { count: 'exact' })
@@ -132,7 +117,7 @@ export default function Home() {
       if (data) {
         setLeaderboard(data.map(entry => ({
           userId: entry.user_id,
-          displayName: entry.display_name, // Changed from email to display_name
+          displayName: entry.display_name,
           bestTime: entry.best_time,
           rank: entry.rank
         })))
@@ -158,7 +143,6 @@ export default function Home() {
 
   return (
     <main className="container relative mx-auto px-4 py-8">
-      {/* Background gradient circles */}
       <div className="fixed inset-0 overflow-hidden -z-10">
         <div className="absolute -left-1/4 -top-1/4 w-1/2 h-1/2 bg-blue-400/30 rounded-full blur-3xl animate-drift" />
         <div className="absolute -right-1/4 -bottom-1/4 w-1/2 h-1/2 bg-purple-400/30 rounded-full blur-3xl animate-drift-slow" />

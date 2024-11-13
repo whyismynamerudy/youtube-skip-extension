@@ -15,14 +15,12 @@ function CallbackContent() {
       try {
         const code = searchParams.get('code')
         
-        // Handle returning users (code flow)
         if (code) {
           await supabase.auth.exchangeCodeForSession(code)
           router.push('/')
           return
         }
 
-        // Handle new users (hash flow)
         const hashParams = new URLSearchParams(
           window.location.hash.substring(1)
         )
@@ -39,14 +37,12 @@ function CallbackContent() {
           return
         }
 
-        // If we already have a session, just redirect
         const { data: { session } } = await supabase.auth.getSession()
         if (session) {
           router.push('/')
           return
         }
 
-        // Only redirect with error if no auth method worked
         router.push('/?error=no_auth_method_found')
         
       } catch (error) {
