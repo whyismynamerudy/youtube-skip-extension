@@ -10,12 +10,7 @@
         "64": "icons/icon64.png"
     },
     "permissions": [
-      "activeTab",
       "storage"
-    ],
-    "host_permissions": [
-      "https://www.youtube.com/*",
-      "https://ytskip.whyismynamerudy.tech/*"
     ],
     "content_scripts": [
       {
