@@ -86,26 +86,6 @@ npm run package-extension
 4. Enable "Developer mode"
 5. Click "Load unpacked" and select the extracted folder
 
-## 📊 Database Schema
-
-```sql
--- Main tables
-reaction_times (
-  id uuid PRIMARY KEY,
-  user_id uuid REFERENCES auth.users(id),
-  time float8 NOT NULL,
-  created_at timestamptz DEFAULT now()
-)
-
-user_stats (
-  user_id uuid PRIMARY KEY,
-  best_time float8 NOT NULL,
-  total_skips int4 DEFAULT 0,
-  rank int4,
-  updated_at timestamptz DEFAULT now()
-)
-```
-
 ## 🔒 Security
 
 - Row Level Security (RLS) policies protect user data
@@ -136,6 +116,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📧 Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_twitter)
+Your Name - [@wimnr9745](https://x.com/wimnr9745)
 
-Project Link: [https://github.com/yourusername/youtube-ad-timer](https://github.com/yourusername/youtube-ad-timer)
+Project Link: [https://github.com/whyismynamerudy/youtube-skip-extension](https://github.com/whyismynamerudy/youtube-skip-extension)
